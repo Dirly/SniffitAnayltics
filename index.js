@@ -1,20 +1,27 @@
-var server = require('http').createServer(),
-	url = require('url'), 
-	WebSocketServer = require('ws').Server,
-	wss = new WebSocketServer({ server: server }),
-	express = require('express'), 
-	app = express(), 
-	port = 4080;
+var WebSocketServer = require("ws").Server,
+	http = require("http"),
+	express = require("express"),
+	app = express(),
+	port = process.env.PORT || 5000;
 
-app.use(function (req, res) {
-  res.send({ msg: "hello" });
+app.use(express.static(__dirname + "/"));
+
+var server = http.createServer(app);
+	server.listen(port);
+
+console.log("http server listening on %d", port);
+
+var wss = new WebSocketServer({server: server});
+console.log("websocket server created");
+
+wss.on("connection", function(ws) {
+	console.log("websocket connection open");
+
+	ws.on('message', function incoming(message) {
+		console.log('received: %s', message);
+	});
+
+	ws.on("close", function() {
+		console.log("websocket connection close");
+	});
 });
-
-wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(message) {
-    console.log('received: %s', message);
-  });
-});
-
-server.on('request', app);
-server.listen(port, function () { console.log('Listening on ' + server.address().port) });
