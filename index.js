@@ -1,26 +1,14 @@
-/*var server = require('http').createServer(), 
+var server = require('http').createServer(),
+	url = require('url'), 
 	WebSocketServer = require('ws').Server,
-	wss = new WebSocketServer({ server: server }),
-	express = require('express'),
-	app = express(),
-	port = 4080;
+		wss = new WebSocketServer({ server: server }),
+		express = require('express'), 
+		app = express(), 
+		port = 4080;
 
-wss.on('connection', function connection(ws) {
-	ws.on('message', function incoming(message) {
-		console.log('received: %s', message);
-	});
-
-	ws.send('something');
+app.use(function (req, res) {
+  res.send({ msg: "hello" });
 });
-
-server.on('request', app);
-server.listen(port, function () {
-
-});*/
-
-
-var WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({ port: 8080 });
 
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
@@ -29,3 +17,6 @@ wss.on('connection', function connection(ws) {
 
   ws.send('something');
 });
+
+server.on('request', app);
+server.listen(port, function () { console.log('Listening on ' + server.address().port) });
