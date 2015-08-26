@@ -16,27 +16,40 @@ app.use(express.static(__dirname + "/"));
 var server = http.createServer(app);
 	server.listen(port);
 
-console.log("http server listening on %d", port);
-
 var wss = new WebSocketServer({server: server});
-console.log("websocket server created");
+
+var sniffedSchema = new mongoose.Schema({
+	id: String,
+	hours: Number,
+	lines: Number,
+	skippedEvents: Number,
+	totalEvents: Number
+});
+
+var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 
 wss.on("connection", function(ws) {
 	console.log("websocket connection open");
-
 	mongoose.connect(uristring, function (err, res) {
 		if (err) {
 			console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 		} else {
-			console.log ('Succeeded connected to: ' + uristring);
+			ws.on('message', function incoming(message) {
+				var data = JSON.parse(message.data);
+					
+				var newData = new SSniffed({
+					id: data.id,
+					hours: data.hours,
+					lines: data.lines,
+					skippedEvents: data.skippedEvents,
+					totalEvents: data.totalEvents
+				});
+			});
 		}
 	});
 
-	ws.on('message', function incoming(message) {
-		console.log('received:', message);
-	});
-
 	ws.on("close", function() {
+		mongoose.connection.close();
 		console.log("websocket connection close");
 	});
 });
