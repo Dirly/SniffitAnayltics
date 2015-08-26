@@ -36,14 +36,11 @@ wss.on("connection", function(ws) {
 
 	ws.on('message', function incoming(message) {
 		mongoose.connect(uristring, function (err, res) {
-		
-
-		
-
-		/*SSniffed.findOne({'id': data.id}, function(err,p){
-			if(p){
-				p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
+			if (err) {
+				console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 			} else {
+				console.log('connection to DB established');
+				var data = JSON.parse(message);	
 				var newData = new SSniffed({
 					id: data.id,
 					hours: data.hours,
@@ -51,27 +48,12 @@ wss.on("connection", function(ws) {
 					skippedEvents: data.skippedEvents,
 					totalEvents: data.totalEvents
 				});
-				newData.save();
-			}*/
-				if (err) {
-					console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-				} else {
-					console.log('connection to DB established');
-					var data = JSON.parse(message);	
-					var newData = new SSniffed({
-						id: data.id,
-						hours: data.hours,
-						lines: data.lines,
-						skippedEvents: data.skippedEvents,
-						totalEvents: data.totalEvents
-					});
-					newData.save(function (err) {
-						if (err){
-							 console.log ('Error on save!');
-						}
-					});
-				}
-			});
+				newData.save(function (err) {
+					if (err){
+						 console.log ('Error on save!');
+					}
+				});
+			}
 		});
 	});
 
@@ -81,3 +63,17 @@ wss.on("connection", function(ws) {
 	});
 });
 
+	/*SSniffed.findOne({'id': data.id}, function(err,p){
+		if(p){
+			p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
+		} else {
+			var newData = new SSniffed({
+				id: data.id,
+				hours: data.hours,
+				lines: data.lines,
+				skippedEvents: data.skippedEvents,
+				totalEvents: data.totalEvents
+			});
+			newData.save();
+		}
+	});*/
