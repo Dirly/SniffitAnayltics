@@ -41,6 +41,8 @@ wss.on("connection", function(ws) {
 	ws.on('message', function incoming(message) {
 		var data = JSON.parse(message);	
 
+			console.log(data.id);
+
 		var newData = new SSniffed({
 				id: data.id,
 				hours: data.hours,
@@ -48,7 +50,7 @@ wss.on("connection", function(ws) {
 				skippedEvents: data.skippedEvents,
 				totalEvents: data.totalEvents
 			});
-		
+
 			newData.save(function (err) {
 				if (err){
 					 console.log ('Error on save!');
