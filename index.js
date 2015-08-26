@@ -47,7 +47,7 @@ wss.on("connection", function(ws) {
 				});
 				newData.save(function (err) {
 					if (err){
-						 console.log ('Error on save!');
+						 console.log ('Error on save!', err);
 					}
 				});
 			}
