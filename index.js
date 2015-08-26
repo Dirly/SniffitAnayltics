@@ -18,14 +18,7 @@ var server = http.createServer(app);
 
 var wss = new WebSocketServer({server: server});
 
-
-
-var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
-
-wss.on("connection", function(ws) {
-	console.log("websocket connection open");
-
-	var sniffedSchema = new mongoose.Schema({
+var sniffedSchema = new mongoose.Schema({
 		id: String,
 		hours: Number,
 		lines: Number,
@@ -33,7 +26,11 @@ wss.on("connection", function(ws) {
 		totalEvents: Number
 	},{ _id : false });
 
+var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 
+
+wss.on("connection", function(ws) {
+	console.log("websocket connection open");
 	ws.on('message', function incoming(message) {
 		mongoose.connect(uristring, function (err, res) {
 			if (err) {
