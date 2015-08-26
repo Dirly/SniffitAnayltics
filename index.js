@@ -9,7 +9,7 @@ var WebSocketServer = require("ws").Server,
 var uristring =
 	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/HelloMongoose';
+	'mongodb://localhost/heroku_xsk8kvgn';
 
 app.use(express.static(__dirname + "/"));
 
@@ -44,7 +44,6 @@ wss.on("connection", function(ws) {
 			if(p){
 				p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
 			} else {
-				console.log("got here");
 				var newData = new SSniffed({
 					id: data.id,
 					hours: data.hours,
