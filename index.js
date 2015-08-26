@@ -37,9 +37,9 @@ wss.on("connection", function(ws) {
 			ws.on('message', function incoming(message) {
 				var data = JSON.parse(message);
 
-				console.log(data);
+				console.log(message);
 				
-				SSniffed.findOne({'id': data.id}, function(err,p){
+				/*SSniffed.findOne({'id': data.id}, function(err,p){
 					if(p){
 						p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
 					} else {
@@ -52,7 +52,7 @@ wss.on("connection", function(ws) {
 						});
 						newdata.save();
 					}
-				});
+				});*/
 			});
 		}
 	});
