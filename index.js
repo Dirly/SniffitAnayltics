@@ -24,7 +24,7 @@ var sniffedSchema = new mongoose.Schema({
 		lines: Number,
 		skippedEvents: Number,
 		totalEvents: Number
-	},{ _id : false });
+	});
 
 var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 
