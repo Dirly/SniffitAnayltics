@@ -24,7 +24,7 @@ var sniffedSchema = new mongoose.Schema({
 	lines: Number,
 	skippedEvents: Number,
 	totalEvents: Number
-});
+},{ _id : false });
 
 var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 
@@ -36,13 +36,20 @@ wss.on("connection", function(ws) {
 		} else {
 			ws.on('message', function incoming(message) {
 				var data = JSON.parse(message.data);
-					
-				var newData = new SSniffed({
-					id: data.id,
-					hours: data.hours,
-					lines: data.lines,
-					skippedEvents: data.skippedEvents,
-					totalEvents: data.totalEvents
+				
+				SSniffed.findOne({'id': data.id}, function(err,p){
+					if(p){
+						p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
+					} else {
+						var newData = new SSniffed({
+							id: data.id,
+							hours: data.hours,
+							lines: data.lines,
+							skippedEvents: data.skippedEvents,
+							totalEvents: data.totalEvents
+						});
+						newdata.save();
+					}
 				});
 			});
 		}
