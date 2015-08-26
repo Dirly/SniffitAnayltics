@@ -34,7 +34,7 @@ wss.on("connection", function(ws) {
 		if (err) {
 			console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 		} else {
-			
+			console.log ('Connected to MongoLab');
 		}
 	});
 
@@ -52,7 +52,7 @@ wss.on("connection", function(ws) {
 					skippedEvents: data.skippedEvents,
 					totalEvents: data.totalEvents
 				});
-				newdata.save();
+				newData.save();
 			}
 		});
 	});
