@@ -39,9 +39,9 @@ wss.on("connection", function(ws) {
 	});
 
 	ws.on('message', function incoming(message) {
-		/*var data = JSON.parse(message);*/
+		var data = JSON.parse(message);
 
-		console.log(message);
+		console.log(data);
 		
 		/*SSniffed.findOne({'id': data.id}, function(err,p){
 			if(p){
