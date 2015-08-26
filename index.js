@@ -35,7 +35,9 @@ wss.on("connection", function(ws) {
 			console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 		} else {
 			ws.on('message', function incoming(message) {
-				var data = JSON.parse(message.data);
+				var data = JSON.parse(message);
+
+				console.log(data);
 				
 				SSniffed.findOne({'id': data.id}, function(err,p){
 					if(p){
