@@ -39,14 +39,12 @@ wss.on("connection", function(ws) {
 	});
 
 	ws.on('message', function incoming(message) {
-		var data = JSON.parse(message);
-
-		console.log(data);
-		
-		/*SSniffed.findOne({'id': data.id}, function(err,p){
+		var data = JSON.parse(message);		
+		SSniffed.findOne({'id': data.id}, function(err,p){
 			if(p){
 				p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
 			} else {
+				console.log("got here");
 				var newData = new SSniffed({
 					id: data.id,
 					hours: data.hours,
@@ -56,9 +54,9 @@ wss.on("connection", function(ws) {
 				});
 				newdata.save();
 			}
-		});*/
+		});
 	});
-	
+
 	ws.on("close", function() {
 		mongoose.connection.close();
 		console.log("websocket connection close");
