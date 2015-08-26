@@ -37,19 +37,41 @@ wss.on("connection", function(ws) {
 				console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 			} else {
 				console.log('connection to DB established');
-				var data = JSON.parse(message);	
+				var data = JSON.parse(message);
+				SSniffed.findOne({'id': data.id}, function(err,p){
+					if(p){
+						console.log("entry found");
+						p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
+					} else {
+						console.log("entry NOT found");
+						var newData = new SSniffed({
+							id: data.id,
+							hours: data.hours,
+							lines: data.lines,
+							skippedEvents: data.skippedEvents,
+							totalEvents: data.totalEvents
+						});
+						newData.save(function (err) {
+							if (err){
+								 console.log ('Error on save!', err);
+							} else {
+								console.log ('data saved');
+							}
+						});
+					}
+				});
+
+
+
+				/*	
 				var newData = new SSniffed({
 					id: data.id,
 					hours: data.hours,
 					lines: data.lines,
 					skippedEvents: data.skippedEvents,
 					totalEvents: data.totalEvents
-				});
-				newData.save(function (err) {
-					if (err){
-						 console.log ('Error on save!', err);
-					}
-				});
+				});*/
+				
 			}
 		});
 	});
@@ -60,17 +82,3 @@ wss.on("connection", function(ws) {
 	});
 });
 
-	/*SSniffed.findOne({'id': data.id}, function(err,p){
-		if(p){
-			p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
-		} else {
-			var newData = new SSniffed({
-				id: data.id,
-				hours: data.hours,
-				lines: data.lines,
-				skippedEvents: data.skippedEvents,
-				totalEvents: data.totalEvents
-			});
-			newData.save();
-		}
-	});*/
