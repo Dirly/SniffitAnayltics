@@ -18,46 +18,29 @@ var server = http.createServer(app);
 
 var wss = new WebSocketServer({server: server});
 
-var sniffedSchema = new mongoose.Schema({
-	id: String,
-	hours: Number,
-	lines: Number,
-	skippedEvents: Number,
-	totalEvents: Number
-},{ _id : false });
+
 
 var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 
 wss.on("connection", function(ws) {
 	console.log("websocket connection open");
-	mongoose.connect(uristring, function (err, res) {
-		if (err) {
-			console.log ('ERROR connecting to: ' + uristring + '. ' + err);
-		} else {
-			console.log ('Connected to MongoLab');
-		}
-	});
+
+	var sniffedSchema = new mongoose.Schema({
+		id: String,
+		hours: Number,
+		lines: Number,
+		skippedEvents: Number,
+		totalEvents: Number
+	},{ _id : false });
+
 
 	ws.on('message', function incoming(message) {
-		var data = JSON.parse(message);	
+		mongoose.connect(uristring, function (err, res) {
+		
 
-			console.log(data.id);
+		
 
-		var newData = new SSniffed({
-				id: data.id,
-				hours: data.hours,
-				lines: data.lines,
-				skippedEvents: data.skippedEvents,
-				totalEvents: data.totalEvents
-			});
-
-			newData.save(function (err) {
-				if (err){
-					 console.log ('Error on save!');
-				}
-			});
-
-		SSniffed.findOne({'id': data.id}, function(err,p){
+		/*SSniffed.findOne({'id': data.id}, function(err,p){
 			if(p){
 				p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
 			} else {
@@ -69,7 +52,26 @@ wss.on("connection", function(ws) {
 					totalEvents: data.totalEvents
 				});
 				newData.save();
-			}
+			}*/
+				if (err) {
+					console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+				} else {
+					console.log('connection to DB established');
+					var data = JSON.parse(message);	
+					var newData = new SSniffed({
+						id: data.id,
+						hours: data.hours,
+						lines: data.lines,
+						skippedEvents: data.skippedEvents,
+						totalEvents: data.totalEvents
+					});
+					newData.save(function (err) {
+						if (err){
+							 console.log ('Error on save!');
+						}
+					});
+				}
+			});
 		});
 	});
 
