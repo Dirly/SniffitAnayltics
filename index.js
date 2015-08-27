@@ -61,8 +61,6 @@ wss.on("connection", function(ws) {
 						}
 					});
 				}
-
-
 				/*	
 				var newData = new SSniffed({
 					id: data.id,
