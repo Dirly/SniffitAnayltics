@@ -38,7 +38,7 @@ wss.on("connection", function(ws) {
 				console.log('connection to DB established');
 				var data = JSON.parse(message);
 
-				if(data.command === "add"){
+				if(data.command === "post"){
 					SSniffed.findById(data.id, function(err,p){
 						if(p){
 							console.log("entry found");
