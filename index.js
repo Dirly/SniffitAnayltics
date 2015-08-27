@@ -46,8 +46,9 @@ wss.on("connection", function(ws) {
 								hours : data.hours,
 								lines : data.lines, 
 								sniffedEvents: data.sniffedEvents, 
-								totalEvents: data.totalEvents
-							}},ws.close());
+								totalEvents: data.totalEvents}
+							});
+							ws.close();
 						} else {
 							console.log("entry NOT found");
 							var newData = new SSniffed({
