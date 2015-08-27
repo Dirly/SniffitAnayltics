@@ -39,16 +39,20 @@ wss.on("connection", function(ws) {
 				var data = JSON.parse(message);
 
 				if(data.command === "post"){
-					SSniffed.findById(data.id, function(err,p){
-						if(p){
+					SSniffed.findById(data.id, function(err,target){
+						if(target){
 							console.log("entry found");
-							SSniffed.update(p,{$set:{
-								hours: data.hours,
-								lines: data.lines, 
-								sniffedEvents: data.sniffedEvents, 
-								totalEvents: data.totalEvents}
+							target.hours = data.hours;
+							target.lines = data.lines;
+							target.sniffedEvents = data.sniffedEvents; 
+							target.totalEvents = data.totalEvents;
+							target.save(function (err) {
+								if (err){
+									 console.log ('Error on save!', err);
+								} else {
+									ws.close();
+								}
 							});
-							ws.close();
 						} else {
 							console.log("entry NOT found");
 							var newData = new SSniffed({
@@ -68,15 +72,6 @@ wss.on("connection", function(ws) {
 						}
 					});
 				}
-				/*	
-				var newData = new SSniffed({
-					id: data.id,
-					hours: data.hours,
-					lines: data.lines,
-					skippedEvents: data.skippedEvents,
-					totalEvents: data.totalEvents
-				});*/
-				
 			}
 		});
 	});
