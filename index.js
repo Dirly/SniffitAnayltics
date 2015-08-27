@@ -42,8 +42,12 @@ wss.on("connection", function(ws) {
 					SSniffed.findById(data.id, function(err,p){
 						if(p){
 							console.log("entry found");
-							p.update({hours: data.hours, lines : data.lines, sniffedEvents: data.sniffedEvents, totalEvents: data.totalEvents});
-							ws.close();
+							SSniffed.update({_id: data.id},{$set:{
+								hours : data.hours,
+								lines : data.lines, 
+								sniffedEvents: data.sniffedEvents, 
+								totalEvents: data.totalEvents
+							}},ws.close());
 						} else {
 							console.log("entry NOT found");
 							var newData = new SSniffed({
