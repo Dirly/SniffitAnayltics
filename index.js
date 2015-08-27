@@ -39,15 +39,14 @@ wss.on("connection", function(ws) {
 				var data = JSON.parse(message);
 
 				if(data.command === "post"){
-					SSniffed.findById(data.id, function(err,p){
+					SSniffed.findByIdAndUpdate(data.id, {$set:{
+						hours: data.hours,
+						lines: data.lines, 
+						sniffedEvents: data.sniffedEvents, 
+						totalEvents: data.totalEvents}
+				}, function(err,p){
 						if(p){
 							console.log("entry found");
-							SSniffed.update({_id: data.id},{$set:{
-								hours : data.hours,
-								lines : data.lines, 
-								sniffedEvents: data.sniffedEvents, 
-								totalEvents: data.totalEvents}
-							});
 							ws.close();
 						} else {
 							console.log("entry NOT found");
