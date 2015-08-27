@@ -19,7 +19,6 @@ var server = http.createServer(app);
 var wss = new WebSocketServer({server: server});
 
 var sniffedSchema = new mongoose.Schema({
-		id: String,
 		hours: Number,
 		lines: Number,
 		skippedEvents: Number,
@@ -38,29 +37,30 @@ wss.on("connection", function(ws) {
 			} else {
 				console.log('connection to DB established');
 				var data = JSON.parse(message);
-				SSniffed.findOne({'id': data.id}, function(err,p){
-					if(p){
-						console.log("entry found");
-						p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
-					} else {
-						console.log("entry NOT found");
-						var newData = new SSniffed({
-							id: data.id,
-							hours: data.hours,
-							lines: data.lines,
-							skippedEvents: data.skippedEvents,
-							totalEvents: data.totalEvents
-						});
-						newData.save(function (err) {
-							if (err){
-								 console.log ('Error on save!', err);
-							} else {
-								console.log ('data saved');
-							}
-						});
-					}
-				});
 
+				if(data.command === "add"){
+					SSniffed.findById(data.id, function(err,p){
+						if(p){
+							console.log("entry found");
+							p.update({hours: data.hours, lines : data.lines, skippedEvents: data.skippedEvents, totalEvents: data.totalEvents});
+						} else {
+							console.log("entry NOT found");
+							var newData = new SSniffed({
+								hours: data.hours,
+								lines: data.lines,
+								skippedEvents: data.skippedEvents,
+								totalEvents: data.totalEvents
+							});
+							newData.save(function (err) {
+								if (err){
+									 console.log ('Error on save!', err);
+								} else {
+									ws.send(newData.id);
+								}
+							});
+						}
+					});
+				}
 
 
 				/*	
