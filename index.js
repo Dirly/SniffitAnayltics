@@ -53,6 +53,7 @@ wss.on("connection", function(ws) {
 									ws.close();
 								}
 							});
+							ws.send("updated");
 						} else {
 							console.log("entry NOT found");
 							var newData = new SSniffed({
