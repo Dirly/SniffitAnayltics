@@ -31,7 +31,7 @@ var SSniffed = mongoose.model('ScriptSniffed', sniffedSchema);
 wss.on("connection", function(ws) {
 	console.log("websocket connection open");
 	ws.on('message', function incoming(message) {
-		mongoose.connect(uristring, function (err, res) {
+		mongoose.connect(uristring, function (err, db) {
 			if (err) {
 				console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 			} else {
@@ -74,7 +74,7 @@ wss.on("connection", function(ws) {
 					});
 				} else if (data.command ==="sumTotal"){
 					console.log("got here");
-					var sumTotal = uristring.SSniffed.aggregate([
+					var sumTotal = db.ScriptSniffed.aggregate([
 						{
 							$group : {
 								_id : null,
