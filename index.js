@@ -74,7 +74,7 @@ wss.on("connection", function(ws) {
 					});
 				} else if (data.command ==="sumTotal"){
 					console.log("got here");
-					var sumTotal = db.sniffedSchema.aggregate([
+					var sumTotal = uristring.sniffedSchema.aggregate([
 						{
 							$group : {
 								_id : null,
