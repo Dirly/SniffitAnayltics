@@ -87,7 +87,7 @@ wss.on("connection", function(ws) {
 							]
 						);
 					};
-					console.log(sumTotal.totalHours);
+					console.log(sumTotal);
 					ws.send(JSON.stringify(sumTotal));
 				}
 			}
