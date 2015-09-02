@@ -72,6 +72,18 @@ wss.on("connection", function(ws) {
 							});
 						}
 					});
+				} else if (data.command ==="sumTotal"){
+					var sumTotal = db.sniffedSchema.aggregate([
+						{
+							$group : {
+								_id : null,
+								totalHours : {$sum: "$hours"},
+								totalLines : {$sum: "$lines"},
+								totalSniffed : {$sum: "$sniffedEvents"}
+							}
+						}
+					]);
+					ws.send(JSON.stringify(sumTotal));
 				}
 			}
 		});
