@@ -73,6 +73,7 @@ wss.on("connection", function(ws) {
 						}
 					});
 				} else if (data.command ==="sumTotal"){
+					console.log("got here");
 					var sumTotal = db.sniffedSchema.aggregate([
 						{
 							$group : {
@@ -83,6 +84,7 @@ wss.on("connection", function(ws) {
 							}
 						}
 					]);
+					console.log(sumTotal);
 					ws.send(JSON.stringify(sumTotal));
 				}
 			}
