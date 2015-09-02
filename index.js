@@ -32,7 +32,6 @@ wss.on("connection", function(ws) {
 	console.log("websocket connection open");
 	ws.on('message', function incoming(message) {
 		mongoose.connect(uristring, function (err, db) {
-			console.log(db);
 			if (err) {
 				console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 			} else {
@@ -74,18 +73,19 @@ wss.on("connection", function(ws) {
 						}
 					});
 				} else if (data.command ==="sumTotal"){
-					console.log("got here");
-					var sumTotal = SSniffed.aggregate([
-						{
-							$group : {
-								_id : null,
-								totalHours : {$sum: "$hours"},
-								totalLines : {$sum: "$lines"},
-								totalSniffed : {$sum: "$sniffedEvents"}
+					var sumTotal = SSniffed.aggregate(
+						[
+							{
+								$group : {
+									_id : null,
+									totalHours: {$sum: "$hours" },
+									totalLines: {$sum: "$lines" },
+									totalSniffed: {$sum: "$sniffedEvents" }
+								}
 							}
-						}
-					]);
-					console.log(sumTotal);
+						]
+					);
+					console.log(sumTotal.totalHours);
 					ws.send(JSON.stringify(sumTotal));
 				}
 			}
