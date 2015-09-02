@@ -89,7 +89,7 @@ wss.on("connection", function(ws) {
 								return;
 							}
 							console.log(result);
-							ws.send(JSON.stringify(sumTotal));
+							ws.send(JSON.stringify(result));
 							ws.close();
 						}
 					);
