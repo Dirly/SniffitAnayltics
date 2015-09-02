@@ -73,28 +73,26 @@ wss.on("connection", function(ws) {
 						}
 					});
 				} else if (data.command ==="sumTotal"){
-					var sumTotal = function(){
-						SSniffed.aggregate(
-							[
-								{
-									$group : {
-										_id : null,
-										totalHours: {$sum: "$hours" },
-										totalLines: {$sum: "$lines" },
-										totalSniffed: {$sum: "$sniffedEvents" }
-									}
+					SSniffed.aggregate(
+						[
+							{
+								$group : {
+									_id : null,
+									totalHours: {$sum: "$hours" },
+									totalLines: {$sum: "$lines" },
+									totalSniffed: {$sum: "$sniffedEvents" }
 								}
-							], function (err, result) {
-								if (err) {
-									console.log(err);
-									return;
-								}
-								console.log(result);
-								ws.send(JSON.stringify(sumTotal));
-								ws.close();
 							}
-						);
-					};
+						], function (err, result) {
+							if (err) {
+								console.log(err);
+								return;
+							}
+							console.log(result);
+							ws.send(JSON.stringify(sumTotal));
+							ws.close();
+						}
+					);
 				}
 			}
 		});
