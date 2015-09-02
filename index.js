@@ -84,11 +84,17 @@ wss.on("connection", function(ws) {
 										totalSniffed: {$sum: "$sniffedEvents" }
 									}
 								}
-							]
+							], function (err, result) {
+								if (err) {
+									console.log(err);
+									return;
+								}
+								console.log(result);
+								ws.send(JSON.stringify(sumTotal));
+								ws.close();
+							}
 						);
 					};
-					console.log(sumTotal);
-					ws.send(JSON.stringify(sumTotal));
 				}
 			}
 		});
