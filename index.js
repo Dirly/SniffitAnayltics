@@ -32,6 +32,7 @@ wss.on("connection", function(ws) {
 	console.log("websocket connection open");
 	ws.on('message', function incoming(message) {
 		mongoose.connect(uristring, function (err, db) {
+			console.log(db);
 			if (err) {
 				console.log ('ERROR connecting to: ' + uristring + '. ' + err);
 			} else {
