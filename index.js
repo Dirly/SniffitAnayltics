@@ -78,6 +78,7 @@ wss.on("connection", function(ws) {
 							{
 								$group : {
 									_id : null,
+									command:'test',
 									totalHours: {$sum: "$hours" },
 									totalLines: {$sum: "$lines" },
 									totalSniffed: {$sum: "$sniffedEvents" }
