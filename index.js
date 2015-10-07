@@ -52,8 +52,6 @@ wss.on("connection", function(ws) {
 							target.save(function (err) {
 								if (err){
 									 console.log ('Error on save!', err);
-								} else {
-									ws.close();
 								}
 							});
 							ws.send("updated");
@@ -70,7 +68,6 @@ wss.on("connection", function(ws) {
 									 console.log ('Error on save!', err);
 								} else {
 									ws.send(newData.id);
-									ws.close();
 								}
 							});
 						}
@@ -95,6 +92,7 @@ wss.on("connection", function(ws) {
 								}
 								result.command = "test";
 								ws2.send(JSON.stringify(result));
+								ws.close();
 								ws2.close();
 							}
 						);
