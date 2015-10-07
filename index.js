@@ -1,6 +1,6 @@
 var WebSocketServer = require("ws").Server,
-	WebSocket = require('ws'),
-	http = require("http"),
+/*	WebSocket = require('ws'),
+*/	http = require("http"),
 	express = require("express"),
 	mongoose = require("mongoose"),
 	app = express(),
@@ -19,7 +19,7 @@ var server = http.createServer(app);
 
 var wss = new WebSocketServer({server: server});
 
-var ws2 = new WebSocket('ws://sheltered-mesa-4257.herokuapp.com');
+var ws2 = new WebSocketServer('ws://sheltered-mesa-4257.herokuapp.com');
 
 var sniffedSchema = new mongoose.Schema({
 		hours: Number,
