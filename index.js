@@ -1,4 +1,5 @@
 var WebSocketServer = require("ws").Server,
+	WebSocket = require('ws'),
 	http = require("http"),
 	express = require("express"),
 	mongoose = require("mongoose"),
