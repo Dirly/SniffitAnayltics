@@ -78,7 +78,6 @@ wss.on("connection", function(ws) {
 							{
 								$group : {
 									_id : null,
-									command:'test',
 									totalHours: {$sum: "$hours" },
 									totalLines: {$sum: "$lines" },
 									totalSniffed: {$sum: "$sniffedEvents" }
@@ -89,7 +88,7 @@ wss.on("connection", function(ws) {
 								console.log(err);
 								return;
 							}
-							console.log(result);
+							result.command = "test";
 							ws.send(JSON.stringify(result));
 							ws.close();
 						}
