@@ -18,6 +18,8 @@ var server = http.createServer(app);
 
 var wss = new WebSocketServer({server: server});
 
+var ws2 = new WebSocket('ws://sheltered-mesa-4257.herokuapp.com');
+
 var sniffedSchema = new mongoose.Schema({
 		hours: Number,
 		lines: Number,
@@ -72,6 +74,29 @@ wss.on("connection", function(ws) {
 							});
 						}
 					});
+				/*} else if (data.command ==="sumTotal"){*/
+					ws2.on('open', function open() {
+						SSniffed.aggregate(
+							[
+								{
+									$group : {
+										_id : null,
+										totalHours: {$sum: "$hours" },
+										totalLines: {$sum: "$lines" },
+										totalSniffed: {$sum: "$sniffedEvents" }
+									}
+								}
+							], function (err, result) {
+								if (err) {
+									console.log(err);
+									return;
+								}
+								result.command = "test";
+								ws2.send(JSON.stringify(result));
+								ws2.close();
+							}
+						);
+					});
 				} else if (data.command ==="sumTotal"){
 					SSniffed.aggregate(
 						[
@@ -88,7 +113,7 @@ wss.on("connection", function(ws) {
 								console.log(err);
 								return;
 							}
-							result.command = "test";
+							console.log(result);
 							ws.send(JSON.stringify(result));
 							ws.close();
 						}
