@@ -77,6 +77,7 @@ wss.on("connection", function(ws) {
 					});
 				/*} else if (data.command ==="sumTotal"){*/
 					ws2.on('open', function open() {
+						console.log("connecting to site");
 						SSniffed.aggregate(
 							[
 								{
